@@ -264,6 +264,17 @@ export default function TodosPage() {
                         <span className="text-sm font-medium">{percentage}%</span>
                       </div>
                     </div>
+
+                    <div className="flex justify-end">
+                      <Button
+                        variant="ghost"
+                        className="text-destructive hover:text-destructive/80"
+                        onClick={handleDeleteAllTodos}
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Excluir todas as tarefas
+                      </Button>
+                    </div>
                   </div>
                 )}
               </CardContent>
