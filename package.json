@@ -37,7 +37,9 @@
     "@radix-ui/react-toggle": "1.1.1",
     "@radix-ui/react-toggle-group": "1.1.1",
     "@radix-ui/react-tooltip": "1.1.6",
+    "@types/canvas-confetti": "^1.9.0",
     "autoprefixer": "^10.4.20",
+    "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "1.0.4",
@@ -66,5 +68,6 @@
     "postcss": "^8.5",
     "tailwindcss": "^3.4.17",
     "typescript": "^5"
-  }
+  },
+  "packageManager": "pnpm@9.15.0+sha512.76e2379760a4328ec4415815bcd6628dee727af3779aaa4c914e3944156c4299921a89f976381ee107d41f12cfa4b66681ca9c718f0668fa0831ed4c6d8ba56c"
 }

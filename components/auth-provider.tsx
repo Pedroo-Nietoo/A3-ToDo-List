@@ -25,7 +25,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Check for existing session
     const savedUser = localStorage.getItem("currentUser")
     if (savedUser) {
       setUser(JSON.parse(savedUser))
@@ -35,26 +34,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const register = async (name: string, email: string, password: string): Promise<boolean> => {
     try {
-      // Get existing users
       const users = JSON.parse(localStorage.getItem("users") || "[]")
 
-      // Check if user already exists
       if (users.find((u: any) => u.email === email)) {
         return false
       }
 
-      // Create new user
       const newUser = {
         id: Date.now().toString(),
         name,
         email,
-        password, // In real app, this would be hashed
+        password,
       }
 
       users.push(newUser)
       localStorage.setItem("users", JSON.stringify(users))
 
-      // Auto login after registration
       const userSession = { id: newUser.id, email: newUser.email, name: newUser.name }
       setUser(userSession)
       localStorage.setItem("currentUser", JSON.stringify(userSession))

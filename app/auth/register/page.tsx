@@ -11,7 +11,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { useAuth } from "@/components/auth-provider"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { CheckSquare } from "lucide-react"
+import { Blend } from "lucide-react"
 
 export default function RegisterPage() {
   const [name, setName] = useState("")
@@ -28,12 +28,12 @@ export default function RegisterPage() {
     setError("")
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match")
+      setError("Senhas não são iguais")
       return
     }
 
     if (password.length < 6) {
-      setError("Password must be at least 6 characters")
+      setError("A senha deve ter pelo menos 6 caracteres")
       return
     }
 
@@ -43,7 +43,7 @@ export default function RegisterPage() {
     if (success) {
       router.push("/todos")
     } else {
-      setError("Email already exists")
+      setError("O email já existe")
     }
     setLoading(false)
   }
@@ -53,10 +53,10 @@ export default function RegisterPage() {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
-            <CheckSquare className="h-12 w-12 text-primary" />
+            <Blend className="h-12 w-12 text-primary" />
           </div>
-          <CardTitle className="text-2xl font-bold">Create Account</CardTitle>
-          <CardDescription>Sign up to start managing your todos</CardDescription>
+          <CardTitle className="text-2xl font-bold">Criar uma conta</CardTitle>
+          <CardDescription>Inscreva-se para começar a gerenciar suas tarefas</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -67,14 +67,14 @@ export default function RegisterPage() {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="name">Full Name</Label>
+              <Label htmlFor="name">Nome completo</Label>
               <Input
                 id="name"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                placeholder="Enter your full name"
+                placeholder="Digite seu nome completo"
               />
             </div>
 
@@ -86,44 +86,44 @@ export default function RegisterPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                placeholder="Enter your email"
+                placeholder="Digite seu email"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">Senha</Label>
               <Input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                placeholder="Enter your password"
+                placeholder="Digite sua senha"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <Label htmlFor="confirmPassword">Confirmar Senha</Label>
               <Input
                 id="confirmPassword"
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
-                placeholder="Confirm your password"
+                placeholder="Confirme sua senha"
               />
             </div>
 
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Creating Account..." : "Create Account"}
+              {loading ? "Criando Conta..." : "Criar Conta"}
             </Button>
           </form>
 
           <div className="mt-6 text-center">
             <p className="text-sm text-muted-foreground">
-              Already have an account?{" "}
+              Já possui uma conta?{" "}
               <Link href="/auth/signin" className="text-primary hover:underline">
-                Sign in
+                Entrar
               </Link>
             </p>
           </div>

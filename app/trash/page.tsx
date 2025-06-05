@@ -9,6 +9,8 @@ import { useAuth } from "@/components/auth-provider"
 import { RotateCcw, Trash2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { getDeletedTodos, restoreTodo, permanentlyDeleteTodo, type DeletedTodo } from "@/lib/todos"
+import { toast } from "sonner"
+import { ConfirmAlertDialog } from "@/components/confirm-alert-dialog"
 
 export default function TrashPage() {
   const { user, loading } = useAuth()
@@ -27,21 +29,37 @@ export default function TrashPage() {
   }, [user, loading, router])
 
   const handleRestoreTodo = (todoId: string) => {
-    if (user) {
-      restoreTodo(user.id, todoId)
-      setDeletedTodos((prev) => prev.filter((todo) => todo.id !== todoId))
+    try {
+      if (user) {
+        restoreTodo(user.id, todoId)
+        setDeletedTodos((prev) => prev.filter((todo) => todo.id !== todoId))
+        toast.success("Tarefa restaurada com sucesso!", {
+          duration: 5000,
+          description: "A tarefa foi movida de volta para a lista ativa.",
+        })
+      }
+    } catch (error) {
+      toast.error("Erro ao restaurar a tarefa.")
     }
   }
 
   const handlePermanentDelete = (todoId: string) => {
-    if (user) {
-      permanentlyDeleteTodo(user.id, todoId)
-      setDeletedTodos((prev) => prev.filter((todo) => todo.id !== todoId))
+    try {
+      if (user) {
+        permanentlyDeleteTodo(user.id, todoId)
+        setDeletedTodos((prev) => prev.filter((todo) => todo.id !== todoId))
+        toast.success("Tarefa excluída permanentemente!", {
+          duration: 5000,
+          description: "A tarefa foi removida permanentemente da lixeira.",
+        })
+      }
+    } catch (error) {
+      toast.error("Erro ao excluir a tarefa.")
     }
   }
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
+    return new Date(dateString).toLocaleDateString("pt-BR", {
       year: "numeric",
       month: "short",
       day: "numeric",
@@ -55,7 +73,7 @@ export default function TrashPage() {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-2 text-muted-foreground">Loading...</p>
+          <p className="mt-2 text-muted-foreground">Carregando...</p>
         </div>
       </div>
     )
@@ -70,19 +88,19 @@ export default function TrashPage() {
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
           <div className="flex-1">
-            <h1 className="text-lg font-semibold">Trash</h1>
+            <h1 className="text-lg font-semibold">Lixeira</h1>
             <p className="text-sm text-muted-foreground">
-              {deletedTodos.length} deleted {deletedTodos.length === 1 ? "item" : "items"}
+              {deletedTodos.length} {deletedTodos.length === 1 ? "item" : "itens"} excluídos
             </p>
           </div>
         </header>
         <div className="flex-1 p-6">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <Card className="shadow-sm">
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 text-xl">
                   <Trash2 className="h-5 w-5" />
-                  Deleted Tasks
+                  Tarefas Excluídas
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -91,8 +109,8 @@ export default function TrashPage() {
                     <div className="w-16 h-16 mx-auto mb-4 bg-muted rounded-full flex items-center justify-center">
                       <Trash2 className="h-8 w-8 text-muted-foreground" />
                     </div>
-                    <h3 className="text-lg font-medium mb-2">Trash is empty</h3>
-                    <p className="text-muted-foreground">Deleted tasks will appear here and can be restored</p>
+                    <h3 className="text-lg font-medium mb-2">A lixeira está vazia</h3>
+                    <p className="text-muted-foreground">As tarefas excluídas aparecerão aqui e podem ser restauradas</p>
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -107,30 +125,43 @@ export default function TrashPage() {
                           >
                             {todo.text}
                           </p>
-                          <p className="text-xs text-muted-foreground mt-1">Deleted on {formatDate(todo.deletedAt)}</p>
+                          <p className="text-xs text-muted-foreground mt-1">Excluída em {formatDate(todo.deletedAt)}</p>
                         </div>
                         <div className="flex gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleRestoreTodo(todo.id)}
-                            className="text-green-600 hover:text-green-700 hover:border-green-200"
+                          <ConfirmAlertDialog
+                            title="Restaurar tarefa"
+                            description="Deseja realmente restaurar esta tarefa?"
+                            confirmText="Restaurar"
+                            onConfirm={() => handleRestoreTodo(todo.id)}
                           >
-                            <RotateCcw className="h-4 w-4 mr-1" />
-                            Restore
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handlePermanentDelete(todo.id)}
-                            className="text-red-600 hover:text-red-700 hover:border-red-200"
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-green-600 hover:text-green-700 hover:border-green-200"
+                            >
+                              <RotateCcw className="h-4 w-4 mr-1" />
+                              Restaurar
+                            </Button>
+                          </ConfirmAlertDialog>
+                          <ConfirmAlertDialog
+                            title="Excluir permanentemente"
+                            description="Deseja excluir permanentemente? Esta ação é irreversível."
+                            confirmText="Excluir"
+                            onConfirm={() => handlePermanentDelete(todo.id)}
                           >
-                            <Trash2 className="h-4 w-4 mr-1" />
-                            Delete Forever
-                          </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-red-600 hover:text-red-700 hover:border-red-200"
+                            >
+                              <Trash2 className="h-4 w-4 mr-1" />
+                              Excluir Permanentemente
+                            </Button>
+                          </ConfirmAlertDialog>
                         </div>
                       </div>
                     ))}
+
                   </div>
                 )}
               </CardContent>

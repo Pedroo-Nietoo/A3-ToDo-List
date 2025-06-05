@@ -58,7 +58,6 @@ export function deleteTodo(userId: string, todoId: string): void {
     const [deletedTodo] = todos.splice(todoIndex, 1)
     saveTodos(userId, todos)
 
-    // Add to deleted todos
     const deletedTodos = getDeletedTodos(userId)
     const deletedTodoWithTimestamp: DeletedTodo = {
       ...deletedTodo,
@@ -76,7 +75,6 @@ export function restoreTodo(userId: string, todoId: string): void {
     const [restoredTodo] = deletedTodos.splice(todoIndex, 1)
     saveDeletedTodos(userId, deletedTodos)
 
-    // Add back to todos
     const todos = getTodos(userId)
     const { deletedAt, ...todo } = restoredTodo
     todos.push(todo)
@@ -88,4 +86,13 @@ export function permanentlyDeleteTodo(userId: string, todoId: string): void {
   const deletedTodos = getDeletedTodos(userId)
   const filteredTodos = deletedTodos.filter((t) => t.id !== todoId)
   saveDeletedTodos(userId, filteredTodos)
+}
+
+export function updateTodo(userId: string, todoId: string, newText: string): void {
+  const todos = getTodos(userId)
+  const todo = todos.find((t) => t.id === todoId)
+  if (todo) {
+    todo.text = newText
+    saveTodos(userId, todos)
+  }
 }

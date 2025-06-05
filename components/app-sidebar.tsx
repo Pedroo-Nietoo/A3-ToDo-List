@@ -15,7 +15,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "./auth-provider"
-import { CheckSquare, Trash2, LogOut } from "lucide-react"
+import { CheckSquare, Trash2, LogOut, Blend } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
@@ -25,7 +25,6 @@ export function AppSidebar() {
 
   if (!user) return null
 
-  // Generate initials from user name
   const getInitials = (name: string) => {
     return name
       .split(" ")
@@ -35,7 +34,6 @@ export function AppSidebar() {
       .slice(0, 2)
   }
 
-  // Generate a consistent color based on user name
   const getAvatarColor = (name: string) => {
     const colors = [
       "bg-red-500",
@@ -55,10 +53,10 @@ export function AppSidebar() {
     <Sidebar className="border-r">
       <SidebarHeader className="p-6">
         <div className="flex items-center space-x-4">
-          <CheckSquare className="h-8 w-8 text-primary" />
+          <Blend className="h-8 w-8 text-primary" />
           <div>
-            <h1 className="text-xl font-bold">TodoApp</h1>
-            <p className="text-sm text-muted-foreground">Manage your tasks</p>
+            <h1 className="text-xl font-bold">Todo App A3</h1>
+            <p className="text-sm text-muted-foreground">Gerencie suas tarefas</p>
           </div>
         </div>
       </SidebarHeader>
@@ -71,7 +69,7 @@ export function AppSidebar() {
           <div className="px-3 py-4">
             <div className="flex items-center space-x-3">
               <Avatar className="h-12 w-12">
-                <AvatarImage src={`/placeholder.svg?height=48&width=48`} alt={user.name} />
+                <AvatarImage alt={user.name} />
                 <AvatarFallback className={`${getAvatarColor(user.name)} text-white font-semibold`}>
                   {getInitials(user.name)}
                 </AvatarFallback>
@@ -79,10 +77,6 @@ export function AppSidebar() {
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium truncate">{user.name}</p>
                 <p className="text-xs text-muted-foreground truncate">{user.email}</p>
-                <div className="flex items-center mt-1">
-                  <div className="h-2 w-2 bg-green-500 rounded-full mr-2"></div>
-                  <span className="text-xs text-muted-foreground">Online</span>
-                </div>
               </div>
             </div>
           </div>
@@ -99,7 +93,7 @@ export function AppSidebar() {
                 <SidebarMenuButton asChild isActive={pathname === "/todos"}>
                   <Link href="/todos">
                     <CheckSquare className="h-4 w-4" />
-                    <span>My Todos</span>
+                    <span>Minhas Tarefas</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -107,7 +101,7 @@ export function AppSidebar() {
                 <SidebarMenuButton asChild isActive={pathname === "/trash"}>
                   <Link href="/trash">
                     <Trash2 className="h-4 w-4" />
-                    <span>Trash</span>
+                    <span>Lixeira</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -125,7 +119,7 @@ export function AppSidebar() {
               onClick={logout}
             >
               <LogOut className="h-4 w-4 mr-2" />
-              Sign Out
+              Sair
             </Button>
           </SidebarMenuItem>
         </SidebarMenu>

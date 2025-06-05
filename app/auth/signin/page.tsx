@@ -11,7 +11,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { useAuth } from "@/components/auth-provider"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { CheckSquare } from "lucide-react"
+import { Blend } from "lucide-react"
 
 export default function SignInPage() {
   const [email, setEmail] = useState("")
@@ -31,7 +31,7 @@ export default function SignInPage() {
     if (success) {
       router.push("/todos")
     } else {
-      setError("Invalid email or password")
+      setError("E-mail ou senha inválidos")
     }
     setLoading(false)
   }
@@ -41,10 +41,10 @@ export default function SignInPage() {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
-            <CheckSquare className="h-12 w-12 text-primary" />
+            <Blend className="h-12 w-12 text-primary" />
           </div>
-          <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
-          <CardDescription>Sign in to your account to continue</CardDescription>
+          <CardTitle className="text-2xl font-bold">Olá, novamente!</CardTitle>
+          <CardDescription>Entre na sua conta para continuar</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -55,39 +55,39 @@ export default function SignInPage() {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">E-mail</Label>
               <Input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                placeholder="Enter your email"
+                placeholder="Digite seu e-mail"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">Senha</Label>
               <Input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                placeholder="Enter your password"
+                placeholder="Digite sua senha"
               />
             </div>
 
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Signing In..." : "Sign In"}
+              {loading ? "Entrando..." : "Entrar"}
             </Button>
           </form>
 
           <div className="mt-6 text-center">
             <p className="text-sm text-muted-foreground">
-              {"Don't have an account?"}{" "}
+              {"Não possui uma conta?"}{" "}
               <Link href="/auth/register" className="text-primary hover:underline">
-                Sign up
+                Criar conta
               </Link>
             </p>
           </div>
