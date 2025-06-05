@@ -9,8 +9,8 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Todo App - Gerencie suas tarefas",
-  description: "A simple and elegant todo list application with authentication",
-  generator: 'v0.dev'
+  description: "Um aplicativo simples e elegante para gerenciar suas tarefas",
+  authors: [{ name: "@Pedroo-Nietoo" }]
 }
 
 export default function RootLayout({
