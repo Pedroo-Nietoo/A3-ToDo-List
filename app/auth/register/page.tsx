@@ -67,14 +67,14 @@ export default function RegisterPage() {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="name">Nome completo</Label>
+              <Label htmlFor="name">Nome</Label>
               <Input
                 id="name"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                placeholder="Digite seu nome completo"
+                placeholder="Digite seu nome"
               />
             </div>
 

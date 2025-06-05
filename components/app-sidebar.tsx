@@ -68,7 +68,7 @@ export function AppSidebar() {
         <SidebarGroupContent>
           <div className="px-3 py-4">
             <div className="flex items-center space-x-3">
-              <Avatar className="h-12 w-12">
+              <Avatar className="h-10 w-10">
                 <AvatarImage alt={user.name} />
                 <AvatarFallback className={`${getAvatarColor(user.name)} text-white font-semibold`}>
                   {getInitials(user.name)}

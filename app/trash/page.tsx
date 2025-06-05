@@ -8,7 +8,13 @@ import { AppSidebar } from "@/components/app-sidebar"
 import { useAuth } from "@/components/auth-provider"
 import { RotateCcw, Trash2 } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { getDeletedTodos, restoreTodo, permanentlyDeleteTodo, type DeletedTodo } from "@/lib/todos"
+import {
+  getDeletedTodos,
+  restoreTodo,
+  permanentlyDeleteTodo,
+  type DeletedTodo,
+  permanentlyDeleteAllTodos,
+} from "@/lib/todos"
 import { toast } from "sonner"
 import { ConfirmAlertDialog } from "@/components/confirm-alert-dialog"
 
@@ -16,6 +22,7 @@ export default function TrashPage() {
   const { user, loading } = useAuth()
   const router = useRouter()
   const [deletedTodos, setDeletedTodos] = useState<DeletedTodo[]>([])
+  const [isDeleteAllOpen, setIsDeleteAllOpen] = useState(false)
 
   useEffect(() => {
     if (!loading && !user) {
@@ -58,6 +65,22 @@ export default function TrashPage() {
     }
   }
 
+  const handleDeleteAll = () => {
+    try {
+      if (user) {
+        permanentlyDeleteAllTodos(user.id)
+        setDeletedTodos([])
+        setIsDeleteAllOpen(false)
+        toast.success("Todas as tarefas foram excluídas permanentemente!", {
+          duration: 5000,
+          description: "A lixeira foi esvaziada.",
+        })
+      }
+    } catch (error) {
+      toast.error("Erro ao excluir todas as tarefas.")
+    }
+  }
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("pt-BR", {
       year: "numeric",
@@ -87,20 +110,39 @@ export default function TrashPage() {
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
-          <div className="flex-1">
-            <h1 className="text-lg font-semibold">Lixeira</h1>
-            <p className="text-sm text-muted-foreground">
-              {deletedTodos.length} {deletedTodos.length === 1 ? "item" : "itens"} excluídos
-            </p>
+          <div className="flex-1 flex items-center justify-between">
+            <div>
+              <h1 className="text-lg font-semibold">Lixeira</h1>
+              <p className="text-sm text-muted-foreground">
+                {deletedTodos.length} {deletedTodos.length === 1 ? "item" : "itens"} excluídos
+              </p>
+            </div>
           </div>
         </header>
         <div className="flex-1 p-6">
           <div className="max-w-6xl mx-auto">
             <Card className="shadow-sm">
               <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-xl">
-                  <Trash2 className="h-5 w-5" />
-                  Tarefas Excluídas
+                <CardTitle className="flex items-center gap-2 text-xl justify-between">
+                  <div className="flex items-center gap-2">
+                    <Trash2 className="h-5 w-5" />
+                    Tarefas Excluídas
+
+                  </div>
+                  {deletedTodos.length > 0 && (
+                    <ConfirmAlertDialog
+                      title="Excluir todas as tarefas"
+                      description="Deseja excluir todas as tarefas da lixeira? Esta ação é irreversível."
+                      confirmText="Excluir Todas"
+                      onConfirm={handleDeleteAll}
+                      open={isDeleteAllOpen}
+                      onOpenChange={setIsDeleteAllOpen}
+                    >
+                      <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700 hover:border-red-200">
+                        Excluir todas as tarefas
+                      </Button>
+                    </ConfirmAlertDialog>
+                  )}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -161,7 +203,6 @@ export default function TrashPage() {
                         </div>
                       </div>
                     ))}
-
                   </div>
                 )}
               </CardContent>

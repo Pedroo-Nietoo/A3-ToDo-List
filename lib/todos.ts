@@ -88,6 +88,10 @@ export function permanentlyDeleteTodo(userId: string, todoId: string): void {
   saveDeletedTodos(userId, filteredTodos)
 }
 
+export function permanentlyDeleteAllTodos(userId: string): void {
+  saveDeletedTodos(userId, [])
+}
+
 export function updateTodo(userId: string, todoId: string, newText: string): void {
   const todos = getTodos(userId)
   const todo = todos.find((t) => t.id === todoId)

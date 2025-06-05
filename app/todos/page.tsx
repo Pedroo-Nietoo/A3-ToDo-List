@@ -173,10 +173,10 @@ export default function TodosPage() {
                   </Button>
                 </form>
 
-                <ScrollArea className="h-[550px] rounded-md border p-4">
+                <ScrollArea className="h-[600px] rounded-md border p-4">
                   <div className="space-y-3">
                     {todos.length === 0 ? (
-                      <div className="text-center py-12">
+                      <div className="text-center py-52">
                         <div className="w-16 h-16 mx-auto mb-4 bg-muted rounded-full flex items-center justify-center">
                           <Plus className="h-8 w-8 text-muted-foreground" />
                         </div>
@@ -248,31 +248,21 @@ export default function TodosPage() {
                   </div>
                 </ScrollArea>
 
-                {percentage === 100 && totalCount > 0 && (
-                  <div className="text-center">
-                    <Button
-                      variant="ghost"
-                      className="text-destructive hover:text-destructive/80"
-                      onClick={handleDeleteAllTodos}
-                    >
-                      Excluir todas as tarefas
-                    </Button>
-                  </div>
-                )}
-
                 {totalCount > 0 && (
-                  <div className="flex items-center justify-between pt-4 border-t">
-                    <div className="text-sm text-muted-foreground">
-                      {totalCount} {totalCount === 1 ? 'tarefa' : 'tarefas'} no total
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="h-2 bg-muted rounded-full w-32">
-                        <div
-                          className="h-2 bg-primary rounded-full transition-all duration-300"
-                          style={{ width: `${percentage}%` }}
-                        />
+                  <div className="flex flex-col gap-3 pt-4 border-t">
+                    <div className="flex items-center justify-between">
+                      <div className="text-sm text-muted-foreground">
+                        {totalCount} {totalCount === 1 ? 'tarefa' : 'tarefas'} no total
                       </div>
-                      <span className="text-sm font-medium">{percentage}%</span>
+                      <div className="flex items-center gap-2">
+                        <div className="h-2 bg-muted rounded-full w-32">
+                          <div
+                            className="h-2 bg-primary rounded-full transition-all duration-300"
+                            style={{ width: `${percentage}%` }}
+                          />
+                        </div>
+                        <span className="text-sm font-medium">{percentage}%</span>
+                      </div>
                     </div>
                   </div>
                 )}
